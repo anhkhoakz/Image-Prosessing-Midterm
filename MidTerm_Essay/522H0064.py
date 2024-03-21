@@ -44,7 +44,6 @@ def task1():
     _, dst = cv.threshold(frame_gray, 254, 255, cv.THRESH_BINARY_INV)
 
     cv.imwrite("./Task1_Result/Task1b.png", dst)
-    cv.destroyAllWindows()
 
 
 def task2():
@@ -106,8 +105,6 @@ def task2():
     img_edit_10 = edit(img_edit_10, 2, 3, 10)
 
     cv.imwrite("./Task2_Result/task2.png", img)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
 
 
 task1()
