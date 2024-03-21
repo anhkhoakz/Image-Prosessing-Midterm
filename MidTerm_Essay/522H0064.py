@@ -53,14 +53,14 @@ def task2():
 
     img_edit_1 = img[494:558, 263:300]
     img_edit_2 = img[494:558, 300:369]
-    img_edit_8 = img[493:560, 365:408]
-    img_edit_9 = img[500:567, 419:469]
-
     img_edit_3 = img[395:474, 288:437]
     img_edit_5 = img[207:263, 367:395]
     img_edit_6 = img[299:365, 334:373]
     img_edit_7 = img[302:368, 430:472]
+    img_edit_8 = img[493:560, 365:408]
+    img_edit_9 = img[500:567, 419:469]
     img_edit_10 = img[300:378, 468:500]
+
 
     th1 = cv.adaptiveThreshold(
         img_gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 11, 2
