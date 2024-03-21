@@ -24,11 +24,11 @@ def task1():
         balloon = cv.bitwise_and(frame, frame, mask=mask)
         cv.imwrite("./Task1_Result/" + str(key) + ".png", balloon)
 
-    ret, thresh = cv.threshold(frame_gray, 225, 255, cv.THRESH_TOZERO)
+    _, thresh = cv.threshold(frame_gray, 225, 255, cv.THRESH_TOZERO)
     kernel = np.ones((27, 27), np.uint8)
     dillation = cv.dilate(thresh, kernel, iterations=0)
 
-    contours, hierarchy = cv.findContours(
+    contours, _ = cv.findContours(
         image=dillation, mode=cv.RETR_TREE, method=cv.CHAIN_APPROX_NONE
     )
 
@@ -41,7 +41,7 @@ def task1():
             thickness=cv.FILLED,
         )
 
-    th, dst = cv.threshold(frame_gray, 254, 255, cv.THRESH_BINARY_INV)
+    _, dst = cv.threshold(frame_gray, 254, 255, cv.THRESH_BINARY_INV)
 
     cv.imwrite("./Task1_Result/Task1b.png", dst)
     cv.destroyAllWindows()
