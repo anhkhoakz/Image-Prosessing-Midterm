@@ -11,7 +11,7 @@ def task1():
     color_dict_HSV = {
                 'yellow': [[35, 255, 255], [27, 50, 70]],
                 'orange': [[24, 255, 255], [8, 140, 200]],
-                'red1': [[180, 255, 255], [159, 50, 70]],
+                'red': [[180, 255, 255], [159, 50, 70]],
                 'blue': [[128, 255, 255], [90, 50, 70]],
                 'green': [[89, 255, 255], [36, 50, 70]],
                 'purple': [[158, 255, 255], [129, 50, 70]],
@@ -22,7 +22,7 @@ def task1():
         upper = np.array(color_dict_HSV[key][0])
         mask = cv.inRange(hsv, lower, upper)
         balloon = cv.bitwise_and(frame,frame, mask= mask)
-        cv.imwrite(str(key)+'.png',balloon)
+        cv.imwrite('./Task1_Result/'+str(key)+'.png',balloon)
 
     ret, thresh = cv.threshold(frame_gray, 225, 255, cv.THRESH_TOZERO)
     kernel = np.ones((27,27),np.uint8)
@@ -36,7 +36,7 @@ def task1():
     
     th, dst = cv.threshold(frame_gray,254,255, cv.THRESH_BINARY_INV)
 
-    cv.imwrite('Task1b.png', dst)
+    cv.imwrite('./Task1_Result/Task1b.png', dst)
     cv.destroyAllWindows()
 
 
@@ -87,7 +87,7 @@ def task2():
             if area > min_contour_area and area < max_countour_area:
                 x, y, w, h = cv.boundingRect(cnt)
                 cv.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        return img, dillation
+        return img
 
     img_edit_1 = edit(img_edit_1, 1,2,1)
     img_edit_2 = edit(img_edit_2, 1,3,1)
@@ -99,13 +99,10 @@ def task2():
     img_edit_9 = edit(img_edit_9, 2,2,1)
     img_edit_10 = edit(img_edit_10, 2,3,10)
 
-
-    cv.imshow('Bounding Boxes around Digits', img)
-    # cv.imshow('Bounding Boxes around Digits', img_edit_11)
-
+    cv.imwrite('./Task2_Result/task2.png', img)
     cv.waitKey(0)
     cv.destroyAllWindows()
 
-# task1()
+task1()
 task2()
 
