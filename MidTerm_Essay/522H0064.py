@@ -61,11 +61,10 @@ def task2():
     img_edit_9 = img[500:567, 419:469]
     img_edit_10 = img[300:378, 468:500]
 
-
     th1 = cv.adaptiveThreshold(
         img_gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 11, 2
     )
-    contours, hierarchy = cv.findContours(th1, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv.findContours(th1, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
     min_contour_area = 150
     max_countour_area = 1450
@@ -82,12 +81,10 @@ def task2():
 
         closing_gray = cv.cvtColor(closing, cv.COLOR_BGR2GRAY)
 
-        ret, thresh = cv.threshold(closing_gray, lower, 255, cv.THRESH_BINARY)
+        _, thresh = cv.threshold(closing_gray, lower, 255, cv.THRESH_BINARY)
         dillation = cv.erode(thresh, kernel, iterations=iteration)
 
-        contours1, hierarchy1 = cv.findContours(
-            dillation, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE
-        )
+        contours1, _ = cv.findContours(dillation, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE)
         min_contour_area = 350
         max_countour_area = 1600
 
@@ -114,4 +111,4 @@ def task2():
 
 
 task1()
-# task2()
+task2()
