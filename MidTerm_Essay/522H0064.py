@@ -3,10 +3,10 @@ import numpy as np
 
 
 def task1():
-    frame = cv.imread("input1.jpg")
-    frame_gray = cv.imread("input1.jpg", cv.IMREAD_GRAYSCALE)
+    img = cv.imread("input1.jpg")
+    grayImg = cv.imread("input1.jpg", cv.IMREAD_GRAYSCALE)
 
-    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+    hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
 
     color_dict_HSV = {
         "yellow": [[35, 255, 255], [27, 50, 70]],
@@ -21,35 +21,35 @@ def task1():
         lower = np.array(color_dict_HSV[key][1])
         upper = np.array(color_dict_HSV[key][0])
         mask = cv.inRange(hsv, lower, upper)
-        balloon = cv.bitwise_and(frame, frame, mask=mask)
-        cv.imwrite("./Task1_Result/" + str(key) + ".png", balloon)
+        balloon = cv.bitwise_and(img, img, mask=mask)
+        kernel = np.ones((5, 5), np.uint8)
+        balloon = cv.morphologyEx(balloon, cv.MORPH_OPEN, kernel)
+        cv.imwrite(f"./Task1_Result/{key}.png", balloon)
 
-    _, thresh = cv.threshold(frame_gray, 225, 255, cv.THRESH_TOZERO)
-    kernel = np.ones((27, 27), np.uint8)
+    _, thresh = cv.threshold(grayImg, 225, 255, cv.THRESH_TOZERO)
+    kernel = np.ones((5, 5), np.uint8)
     dillation = cv.dilate(thresh, kernel, iterations=0)
 
     contours, _ = cv.findContours(
         image=dillation, mode=cv.RETR_TREE, method=cv.CHAIN_APPROX_NONE
     )
 
-    for cnt in contours:
+    for contour in contours:
         cv.drawContours(
-            image=frame_gray,
-            contours=[cnt],
+            image=grayImg,
+            contours=[contour],
             contourIdx=0,
             color=255,
             thickness=cv.FILLED,
         )
 
-    _, dst = cv.threshold(frame_gray, 254, 255, cv.THRESH_BINARY_INV)
-
+    _, dst = cv.threshold(grayImg, 254, 255, cv.THRESH_BINARY_INV)
     cv.imwrite("./Task1_Result/Task1b.png", dst)
-    cv.destroyAllWindows()
 
 
 def task2():
     img = cv.imread("input2.png")
-    img_gray = cv.imread("input2.png", 0)
+    grayImg = cv.imread("input2.png", 0)
 
     img_edit_1 = img[494:558, 263:300]
     img_edit_2 = img[494:558, 300:369]
@@ -62,35 +62,35 @@ def task2():
     img_edit_10 = img[300:378, 468:500]
 
     th1 = cv.adaptiveThreshold(
-        img_gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 11, 2
+        grayImg, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 11, 2
     )
     contours, _ = cv.findContours(th1, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
-    min_contour_area = 150
-    max_countour_area = 1450
+    minContourArea = 150
+    maxCountourArea = 1450
 
-    for cnt in contours:
-        area = cv.contourArea(cnt)
-        if area > min_contour_area and area < max_countour_area:
-            x, y, w, h = cv.boundingRect(cnt)
+    for contour in contours:
+        area = cv.contourArea(contour)
+        if area > minContourArea and area < maxCountourArea:
+            x, y, w, h = cv.boundingRect(contour)
             cv.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     def edit(img, iteration, kernels, lower):
         kernel = np.ones((kernels, kernels), np.uint8)
         closing = cv.morphologyEx(img, cv.MORPH_CLOSE, kernel)
 
-        closing_gray = cv.cvtColor(closing, cv.COLOR_BGR2GRAY)
+        grayClosing = cv.cvtColor(closing, cv.COLOR_BGR2GRAY)
 
-        _, thresh = cv.threshold(closing_gray, lower, 255, cv.THRESH_BINARY)
+        _, thresh = cv.threshold(grayClosing, lower, 255, cv.THRESH_BINARY)
         dillation = cv.erode(thresh, kernel, iterations=iteration)
 
         contours1, _ = cv.findContours(dillation, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE)
-        min_contour_area = 350
-        max_countour_area = 1600
+        minContourArea = 350
+        maxContourArea = 1600
 
         for cnt in contours1:
             area = cv.contourArea(cnt)
-            if area > min_contour_area and area < max_countour_area:
+            if area > minContourArea and area < maxContourArea:
                 x, y, w, h = cv.boundingRect(cnt)
                 cv.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
         return img
@@ -106,9 +106,7 @@ def task2():
     img_edit_10 = edit(img_edit_10, 2, 3, 10)
 
     cv.imwrite("./Task2_Result/task2.png", img)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
 
 
 task1()
-task2()
+# task2()
