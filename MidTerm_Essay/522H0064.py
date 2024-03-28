@@ -22,8 +22,8 @@ def task1():
         upper = np.array(color_dict_HSV[key][0])
         mask = cv.inRange(hsv, lower, upper)
         balloon = cv.bitwise_and(img, img, mask=mask)
-        kernel = np.ones((5, 5), np.uint8)
-        balloon = cv.morphologyEx(balloon, cv.MORPH_OPEN, kernel)
+        kernel = np.ones((4, 4), np.uint8)
+        balloon = cv.morphologyEx(balloon, cv.MORPH_CLOSE, kernel)
         cv.imwrite(f"./Task1_Result/{key}.png", balloon)
 
     _, thresh = cv.threshold(grayImg, 225, 255, cv.THRESH_TOZERO)
