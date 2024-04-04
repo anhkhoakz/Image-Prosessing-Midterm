@@ -75,7 +75,7 @@ def task2():
             x, y, w, h = cv.boundingRect(contour)
             cv.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-    def edit(img, iteration, kernels, lower):
+    def detect_and_draw_contours(img, iteration, kernels, lower):
         kernel = np.ones((kernels, kernels), np.uint8)
         closing = cv.morphologyEx(img, cv.MORPH_CLOSE, kernel)
 
@@ -95,15 +95,15 @@ def task2():
                 cv.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
         return img
 
-    img_edit_1 = edit(img_edit_1, 1, 2, 1)
-    img_edit_2 = edit(img_edit_2, 1, 3, 1)
-    img_edit_3 = edit(img_edit_3, 1, 3, 30)
-    img_edit_5 = edit(img_edit_5, 2, 1, 1)
-    img_edit_6 = edit(img_edit_6, 1, 2, 10)
-    img_edit_7 = edit(img_edit_7, 3, 2, 10)
-    img_edit_8 = edit(img_edit_8, 2, 3, 1)
-    img_edit_9 = edit(img_edit_9, 2, 2, 1)
-    img_edit_10 = edit(img_edit_10, 2, 3, 10)
+    img_edit_1 = detect_and_draw_contours(img_edit_1, 1, 2, 1)
+    img_edit_2 = detect_and_draw_contours(img_edit_2, 1, 3, 1)
+    img_edit_3 = detect_and_draw_contours(img_edit_3, 1, 3, 30)
+    img_edit_5 = detect_and_draw_contours(img_edit_5, 2, 1, 1)
+    img_edit_6 = detect_and_draw_contours(img_edit_6, 1, 2, 10)
+    img_edit_7 = detect_and_draw_contours(img_edit_7, 3, 2, 10)
+    img_edit_8 = detect_and_draw_contours(img_edit_8, 2, 3, 1)
+    img_edit_9 = detect_and_draw_contours(img_edit_9, 2, 2, 1)
+    img_edit_10 = detect_and_draw_contours(img_edit_10, 2, 3, 10)
 
     cv.imwrite("./Task2_Result/task2.png", img)
 
